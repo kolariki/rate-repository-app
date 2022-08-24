@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import * as Sharing from 'expo-sharing'
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as Sharing from "expo-sharing";
 
 
 const App = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const [selectedImage, setSelectedImage] = useState(null)
   let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert('permission to access camera is required');
+      alert("Permission to camara roll is required");
       return;
     }
 
-    const pickerResult = await ImagePicker.launchImageLibraryAsync()
+    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    // console.log(pickerResult)
 
     if (pickerResult.cancelled === true) {
       return;
@@ -24,17 +32,15 @@ const App = () => {
     setSelectedImage({ localUri: pickerResult.uri });
   };
 
-  const openShareDialog = async () => {
+  let openShareDialog = async () => {
     if (!(await Sharing.isAvailableAsync())) {
       alert('Sharing, is not available on your plataform');
       return;
     }
 
-
     await Sharing.shareAsync(selectedImage.localUri);
   }
-
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}> Selecciona una imagen </Text>
