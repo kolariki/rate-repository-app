@@ -21,41 +21,45 @@ const App = () => {
       return;
     }
 
-    setSelectedImage({ localUri: pickerResult.uri })
-  }
+    setSelectedImage({ localUri: pickerResult.uri });
+  };
 
   const openShareDialog = async () => {
     if (!(await Sharing.isAvailableAsync())) {
       alert('Sharing, is not available on your plataform');
       return;
     }
-await Sharing.shareAsync(selectedImage.localUri);
+
+
+    await Sharing.shareAsync(selectedImage.localUri);
   }
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}> Selecciona un Diamante </Text>
+      <Text style={styles.title}> Selecciona una imagen </Text>
       <TouchableOpacity
         onPress={openImagePickerAsync}
       >
         <Image
           source={{
-            uri: selectedImage !== null
+            uri: 
+            selectedImage !== null
               ? selectedImage.localUri
-              : "https://picsum.photos/200/100"
+              : "https://picsum.photos/200/200",
           }}
           style={styles.image}
         />
       </TouchableOpacity>
-      {
-        selectedImage ? (
-          <TouchableOpacity onPress={openShareDialog} style={styles.button}>
-        <Text style={styles.buttonText}> Comparte este diamante </Text>
-      </TouchableOpacity>
-        ) : (
-          <View/>
-        )}
+      {selectedImage ? (
+        <TouchableOpacity onPress={openShareDialog}>
+          <Text style={styles.buttonText}> Comparte esta imagen </Text>
+        </TouchableOpacity>
+      ) : (
+        "https://picsum.photos/200/200"
+      )}
     </View>
-    );
+  );
 };
 
 const styles = StyleSheet.create({
